@@ -1,0 +1,45 @@
+# Binaries and executables
+**/brokerApp
+**/authApp
+**/frontApp
+**/mailApp
+**/listenerApp
+
+# Go specific
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Mac specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker volumes and data
+db-data/
+postgres-data/
+
+# Environment variables
+.env
+*.env
+
+# Log files
+*.log
+
+# Temp directories
+tmp/
+temp/
+
+# Dependencies
+vendor/
