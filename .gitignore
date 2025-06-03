@@ -1,9 +1,9 @@
 # Binaries and executables
 **/brokerApp
 **/authApp
+**/loggerApp
 **/frontApp
 **/mailApp
-**/listenerApp
 
 # Go specific
 *.exe
@@ -15,10 +15,18 @@
 *.out
 go.work
 
-# Mac specific
-.DS_Store
-.AppleDouble
-.LSOverride
+# Database volumes
+db-data/
+postgres-data/
+mongo-data/
+
+# Environment files
+.env
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # IDE specific
 .idea/
@@ -26,20 +34,23 @@ go.work
 *.swp
 *.swo
 
-# Docker volumes and data
-db-data/
-postgres-data/
+# Mac specific
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# Environment variables
-.env
-*.env
-
-# Log files
+# Logs
 *.log
+logs/
 
-# Temp directories
+# Temporary files
 tmp/
 temp/
 
 # Dependencies
 vendor/
+
+# Docker specific
+.docker/
+docker-compose.override.yml
