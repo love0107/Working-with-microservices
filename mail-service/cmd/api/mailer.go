@@ -13,7 +13,7 @@ type Mail struct {
 	Domain      string
 	Host        string
 	Port        int
-	UserName    string
+	Username    string
 	Password    string
 	Encryption  string
 	FromAddress string
@@ -30,7 +30,7 @@ type Message struct {
 	DataMap     map[string]any
 }
 
-func (m *Mail) sendSMTPMessage(msg Message) error {
+func (m *Mail) SendSMTPMessage(msg Message) error {
 	if msg.From == "" {
 		msg.From = m.FromAddress
 	}
@@ -42,6 +42,7 @@ func (m *Mail) sendSMTPMessage(msg Message) error {
 	data := map[string]any{
 		"message": msg.Data,
 	}
+
 	msg.DataMap = data
 
 	formattedMessage, err := m.buildHTMLMessage(msg)
@@ -57,7 +58,7 @@ func (m *Mail) sendSMTPMessage(msg Message) error {
 	server := mail.NewSMTPClient()
 	server.Host = m.Host
 	server.Port = m.Port
-	server.Username = m.UserName
+	server.Username = m.Username
 	server.Password = m.Password
 	server.Encryption = m.getEncryption(m.Encryption)
 	server.KeepAlive = false
@@ -87,35 +88,40 @@ func (m *Mail) sendSMTPMessage(msg Message) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
 func (m *Mail) buildHTMLMessage(msg Message) (string, error) {
 	templateToRender := "./templates/mail.html.gohtml"
 
-	t, err := template.New("email-html").ParseFile(templateToRender)
+	t, err := template.New("email-html").ParseFiles(templateToRender)
 	if err != nil {
 		return "", err
 	}
+
 	var tpl bytes.Buffer
 	if err = t.ExecuteTemplate(&tpl, "body", msg.DataMap); err != nil {
 		return "", err
 	}
+
 	formattedMessage := tpl.String()
 	formattedMessage, err = m.inlineCSS(formattedMessage)
 	if err != nil {
 		return "", err
 	}
+
 	return formattedMessage, nil
 }
 
 func (m *Mail) buildPlainTextMessage(msg Message) (string, error) {
 	templateToRender := "./templates/mail.plain.gohtml"
 
-	t, err := template.New("email-plain").ParseFile(templateToRender)
+	t, err := template.New("email-plain").ParseFiles(templateToRender)
 	if err != nil {
 		return "", err
 	}
+
 	var tpl bytes.Buffer
 	if err = t.ExecuteTemplate(&tpl, "body", msg.DataMap); err != nil {
 		return "", err
@@ -142,6 +148,7 @@ func (m *Mail) inlineCSS(s string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return html, nil
 }
 
@@ -150,11 +157,10 @@ func (m *Mail) getEncryption(s string) mail.Encryption {
 	case "tls":
 		return mail.EncryptionSTARTTLS
 	case "ssl":
-		return mail.EncryptionSSL
+		return mail.EncryptionSSLTLS
 	case "none", "":
 		return mail.EncryptionNone
 	default:
 		return mail.EncryptionSTARTTLS
 	}
-
 }
