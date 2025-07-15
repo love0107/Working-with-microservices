@@ -10,10 +10,16 @@
 *.exe~
 *.dll
 *.so
+*.bin
 *.dylib
 *.test
+*.o
+*.a
 *.out
 go.work
+
+# Ignore checksum files
+*.sum
 
 # Database volumes
 db-data/
@@ -54,3 +60,10 @@ vendor/
 # Docker specific
 .docker/
 docker-compose.override.yml
+
+frontApp
+brokerApp
+authApp
+loggerServiceApp
+mailerApp
+listenerApp
